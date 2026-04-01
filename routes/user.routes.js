@@ -8,6 +8,7 @@ import {
   updateUser,
   deleteUser,
   toggleBlockUser,
+  getMe,
 } from "../controllers/user.controller.js";
 
 import { protect, authorize } from "../middleware/auth.middleware.js";
@@ -15,10 +16,11 @@ import { protect, authorize } from "../middleware/auth.middleware.js";
 const router = express.Router();
 
 // Only ADMIN access
-router.use(protect, authorize("Admin"));
+router.use(protect);
 
 router.post("/", createUser);
-router.get("/", getUsers);
+router.get("/", authorize("Admin"), getUsers);
+router.get("/me",  getMe);
 router.get("/:id", getUserById);
 router.put("/:id", updateUser);
 router.delete("/:id", deleteUser);
