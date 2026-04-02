@@ -14,12 +14,12 @@ import { protect, authorize } from "../middleware/auth.middleware.js";
 const router = express.Router();
 
 // Admin only
-router.use(protect, authorize("Admin"));
+router.use(protect);
 
-router.post("/", createService);
+router.post("/",authorize("Admin"), createService);
 router.get("/", getServices);
-router.get("/:id", getServiceById);
-router.put("/:id", updateService);
-router.delete("/:id", deleteService);
+router.get("/:id",authorize("Admin"), getServiceById);
+router.put("/:id",authorize("Admin"), updateService);
+router.delete("/:id", authorize("Admin"), deleteService);
 
 export default router;

@@ -33,4 +33,7 @@ const admissionSchema = new mongoose.Schema(
   { timestamps: true },
 );
 
-export default mongoose.model("Admission", admissionSchema);
+const Admission =
+  mongoose.models.Admission || mongoose.model("Admission", admissionSchema);
+
+export default Admission;

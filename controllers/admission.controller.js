@@ -1,4 +1,4 @@
-import Admission from "../models/admission.js";
+import Admission from "../models/Admission.js";
 
 export const createAdmission = async (req, res) => {
   try {
@@ -9,6 +9,7 @@ export const createAdmission = async (req, res) => {
         message: "All fields are required",
       });
     }
+    console.log("user", req.user);
 
     const admission = await Admission.create({
       patientName,

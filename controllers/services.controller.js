@@ -50,10 +50,16 @@ export const createService = async (req, res) => {
 //
 export const getServices = async (req, res) => {
   try {
-    const { page = 1, limit = 10, search } = req.query;
+    const {
+      page = 1,
+      limit = 10,
+      search,
+      isPagination = "true", // 👈 comes as string from query
+    } = req.query;
 
     const pageNumber = parseInt(page);
     const limitNumber = parseInt(limit);
+    const applyPagination = isPagination === "true"; // 👈 convert to boolean
 
     const filter = {};
 
@@ -61,21 +67,28 @@ export const getServices = async (req, res) => {
       filter.serviceName = { $regex: search, $options: "i" };
     }
 
+    // ✅ Total count (always useful)
     const total = await Services.countDocuments(filter);
 
-    const services = await Services.find(filter)
-      .skip((pageNumber - 1) * limitNumber)
-      .limit(limitNumber)
-      .sort({ createdAt: -1 });
+    let query = Services.find(filter).sort({ createdAt: -1 });
+
+    // ✅ Apply pagination only if true
+    if (applyPagination) {
+      query = query.skip((pageNumber - 1) * limitNumber).limit(limitNumber);
+    }
+
+    const services = await query;
 
     res.status(200).json({
       success: true,
-      pagination: {
-        totalRecords: total,
-        totalPages: Math.ceil(total / limitNumber),
-        currentPage: pageNumber,
-        limit: limitNumber,
-      },
+      ...(applyPagination && {
+        pagination: {
+          totalRecords: total,
+          totalPages: Math.ceil(total / limitNumber),
+          currentPage: pageNumber,
+          limit: limitNumber,
+        },
+      }),
       data: services,
     });
   } catch (error) {

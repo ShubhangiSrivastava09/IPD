@@ -23,3 +23,5 @@ router.get(
 router.put("/:id", protect, authorize("Admin"), updateAdmissionService);
 
 router.delete("/:id", protect, authorize("Admin"), deleteAdmissionService);
+
+export default router;

@@ -20,7 +20,7 @@ router.use(protect);
 
 router.post("/", createUser);
 router.get("/", authorize("Admin"), getUsers);
-router.get("/me",  getMe);
+router.get("/me", authorize("Admin", "Doctor", "Staff"), getMe);
 router.get("/:id", getUserById);
 router.put("/:id", updateUser);
 router.delete("/:id", deleteUser);

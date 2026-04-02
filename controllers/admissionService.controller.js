@@ -1,8 +1,8 @@
 // controllers/admissionService.controller.js
 
-import AdmissionService from "../models/AdmissionService.js";
-import Admission from "../models/admission.js";
-import ServiceMaster from "../models/ServiceMaster.js";
+import AdmissionService from "../models/AdmissionServices.js";
+import Admission from "../models/Admission.js";
+import ServiceMaster from "../models/Services.js";
 
 export const addServicesToAdmission = async (req, res) => {
   try {
